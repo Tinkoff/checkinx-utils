@@ -1,4 +1,4 @@
-package com.checkinx.utils
+package com.checkinx.utils.asserts
 
 enum class CoverageLevel(val level: Int?) {
     /* Index Only Scan */

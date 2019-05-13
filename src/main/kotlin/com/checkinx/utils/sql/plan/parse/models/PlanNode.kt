@@ -1,6 +1,6 @@
 package com.checkinx.utils.sql.plan.parse.models
 
-import com.checkinx.utils.CoverageLevel
+import com.checkinx.utils.asserts.CoverageLevel
 
 data class PlanNode(
     val raw: String,
