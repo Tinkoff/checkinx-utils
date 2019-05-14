@@ -30,7 +30,7 @@ class CheckInxAssertServiceImplTest {
 
         // ACT & ASSERT
         try {
-            checkInxAssertService.assertIndex(CoverageLevel.FULL, "ix_pets_age", plan)
+            checkInxAssertService.assertCoverage(CoverageLevel.FULL, "ix_pets_age", plan)
         } catch (e: Exception) {
             fail("no exception expected")
         }
@@ -45,7 +45,7 @@ class CheckInxAssertServiceImplTest {
         ))
 
         // ACT
-        checkInxAssertService.assertIndex(CoverageLevel.FULL, "ix_pets_age", plan)
+        checkInxAssertService.assertCoverage(CoverageLevel.FULL, "ix_pets_age", plan)
     }
 
     @Test
@@ -58,7 +58,7 @@ class CheckInxAssertServiceImplTest {
 
         // ACT & ASSERT
         try {
-            checkInxAssertService.assertIndex(CoverageLevel.HALF, "ix_pets_age", plan)
+            checkInxAssertService.assertCoverage(CoverageLevel.HALF, "ix_pets_age", plan)
         } catch (e: Exception) {
             fail("no exception expected")
         }
@@ -73,6 +73,6 @@ class CheckInxAssertServiceImplTest {
         ))
 
         // ACT
-        checkInxAssertService.assertIndex(CoverageLevel.HALF, "ix_not_existing", plan)
+        checkInxAssertService.assertCoverage(CoverageLevel.HALF, "ix_not_existing", plan)
     }
 }
