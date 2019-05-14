@@ -24,7 +24,7 @@ class ExecutionPlanTest {
         ))
 
         // ACT
-        val result = plan.findTargetInPlanTree("ix_pets_age")
+        val result = plan.findInPlanTree { node -> node.target == "ix_pets_age" }
 
         // ASSERT
         assertEquals(CoverageLevel.FULL, result?.coverageLevel)
@@ -42,7 +42,7 @@ class ExecutionPlanTest {
         ))
 
         // ACT
-        val result = plan.findTargetInPlanTree("ix_location")
+        val result = plan.findInPlanTree { node -> node.target == "ix_location" }
 
         // ASSERT
         assertEquals(CoverageLevel.HALF, result?.coverageLevel)
@@ -57,7 +57,7 @@ class ExecutionPlanTest {
         ))
 
         // ACT
-        val result = plan.findTargetInPlanTree("pets")
+        val result = plan.findInPlanTree { node -> node.target == "pets" }
 
         // ASSERT
         assertEquals(CoverageLevel.ZERO, result?.coverageLevel)

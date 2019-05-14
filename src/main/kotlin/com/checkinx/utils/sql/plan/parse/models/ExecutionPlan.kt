@@ -5,17 +5,17 @@ data class ExecutionPlan(
     val table: String?,
     val rootPlanNode: PlanNode
 ) {
-    fun findTargetInPlanTree(target: String): PlanNode? {
-        return findTargetInPlanTree(target, rootPlanNode)
+    fun findInPlanTree(predicate: (PlanNode) -> Boolean): PlanNode? {
+        return findInPlanTree(predicate, rootPlanNode)
     }
 
-    private fun findTargetInPlanTree(target: String, rootNode: PlanNode): PlanNode? {
-        if (rootNode.target == target) {
+    private fun findInPlanTree(predicate: (PlanNode) -> Boolean, rootNode: PlanNode): PlanNode? {
+        if (predicate(rootNode)) {
             return rootNode
         }
 
         rootNode.children.forEach {
-            val result = findTargetInPlanTree(target, it)
+            val result = findInPlanTree(predicate, it)
             if (result != null) {
                 return result
             }
