@@ -418,24 +418,7 @@ style:
     values: 'TODO:,FIXME:,STOPSHIP:'
   ForbiddenImport:
     active: true
-    imports: '
-    org.junit.experimental,
-    org.junit.matchers,
-    org.junit.rules,
-    org.junit.runner,
-    org.junit.runners,
-    org.junit.validator,
-    org.hamcrest,
-    org.assertj,
-    org.junit.After,
-    org.junit.Before,
-    org.junit.BeforeClass
-    org.junit.AfterClass,
-    org.junit.Ignore,
-    org.junit.FixMethodOrder,
-    org.junit.Rule,
-    org.junit.Test,
-    '
+    imports: 'org.junit.experimental'
   ForbiddenVoid:
     active: false
   FunctionOnlyReturningConstant:
