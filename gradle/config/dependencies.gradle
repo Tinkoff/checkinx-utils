@@ -1,0 +1,15 @@
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.1.4.RELEASE'
+    implementation 'org.postgresql:postgresql:42.2.5'
+    compile group: 'net.ttddyy', name: 'datasource-proxy', version: '1.5.1'
+
+    compile group: 'net.ttddyy', name: 'datasource-assert', version: '1.0'
+    compile group: 'org.codehaus.mojo', name: 'animal-sniffer-annotations', version: '1.17'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.1.4.RELEASE'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc:2.1.4.RELEASE'
+    testImplementation group: 'org.testcontainers', name: 'postgresql', version: '1.10.2'
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation group: 'org.jetbrains.kotlin', name: 'kotlin-reflect'
+}

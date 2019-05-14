@@ -1,6 +1,9 @@
 package com.checkinx.utils.asserts.impl
 
-import com.checkinx.utils.asserts.*
+import com.checkinx.utils.asserts.CheckInxAssertService
+import com.checkinx.utils.asserts.CoverageLevel
+import com.checkinx.utils.asserts.CoverageLevelException
+import com.checkinx.utils.asserts.IndexNotFoundException
 import com.checkinx.utils.sql.plan.parse.ExecutionPlanParser
 import com.checkinx.utils.sql.plan.parse.models.ExecutionPlan
 import com.checkinx.utils.sql.plan.query.ExecutionPlanQuery
