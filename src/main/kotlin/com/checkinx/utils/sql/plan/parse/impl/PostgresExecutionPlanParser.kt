@@ -39,7 +39,7 @@ class PostgresExecutionPlanParser : ExecutionPlanParser {
                     )
 
                     parent.children.add(node)
-                    i = createChildNodes(executionPlan, i, node, childMargin + 6) - 1
+                    i = createChildNodes(executionPlan, i, node, childMargin + MARGIN_STEP) - 1
                 }
                 propertyRegex.matches(item) -> {
                     val matchProperty = propertyRegex.find(item)
@@ -81,5 +81,9 @@ class PostgresExecutionPlanParser : ExecutionPlanParser {
         return Pair(
             matchUsing?.groups?.get("target")?.value,
             matchUsing?.groups?.get("coverage")?.value)
+    }
+
+    companion object {
+        const val MARGIN_STEP = 6
     }
 }
