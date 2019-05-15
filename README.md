@@ -62,6 +62,41 @@ fun testFindByNameGivenLocationWhenIndexUsingThenCoverageIsHalf() {
 
 Look at the [demo repository](https://github.com/dsemyriazhko/checkinx-demo) to find more examples.
 
+## Starting guide
+
+I’m going to publish checkinx in maven repository. Until I’ve done it use jitpack to get artifacts from github.
+
+Firstly, modify your build.gradle:
+
+1. Add new repository
+```
+repositories {
+  // ...
+   maven { url 'https://jitpack.io' }
+}
+```
+
+2. Add new dependency
+```
+dependencies {
+// ...
+   implementation 'com.github.dsemyriazhko:checkinx-utils:0.1.2'
+}
+```
+
+Secondly, add beans to app
+```java
+@ComponentScan("com.checkinx.utils")
+@SpringBootApplication
+public class Application ...
+```
+
+Be sure that you are using org.testcontainers. Its DB version and configuration equals your real DB.
+
+Now you are ready to create your first “intensive” integration test.
+
+## Contribution
+
 If you have time and ideas how to improve checkinx, welcome! I’ll be really happy if you decide to join and contribute.
 
 Hope you'll like it. 
