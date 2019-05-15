@@ -69,15 +69,15 @@ I’m going to publish checkinx in maven repository. Until I’ve done it use ji
 Firstly, modify your build.gradle:
 
 1. Add new repository
-```
+```groovy
 repositories {
   // ...
    maven { url 'https://jitpack.io' }
 }
 ```
 
-2. Add new dependency
-```
+2. Add new dependency (please checkout for latest release [here](https://github.com/dsemyriazhko/checkinx-utils/releases))
+```groovy
 dependencies {
 // ...
    implementation 'com.github.dsemyriazhko:checkinx-utils:0.1.2'
