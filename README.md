@@ -91,7 +91,7 @@ Secondly, add beans to app
 public class Application ...
 ```
 
-Be sure that you are using org.testcontainers. Its DB version and configuration equals your real DB.
+Be sure that you are using org.testcontainers. Its DB version and configuration equal your real DB.
 
 Now you are ready to create your first “intensive” integration test.
 
