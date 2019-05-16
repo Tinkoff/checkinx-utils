@@ -91,6 +91,18 @@ Secondly, add beans to app
 public class Application ...
 ```
 
+Finally, add BeanPostProcessor to your configuration
+```java
+@Configuration
+public class DataSourceConfig {
+    @Profile("test")
+    @Bean
+    public DataSourceWrapper dataSourceWrapperBeanPostProcessor() {
+        return new DataSourceWrapper();
+    }
+}
+```
+
 Be sure that you are using org.testcontainers. Its DB version and configuration equal your real DB.
 
 Now you are ready to create your first “intensive” integration test.
