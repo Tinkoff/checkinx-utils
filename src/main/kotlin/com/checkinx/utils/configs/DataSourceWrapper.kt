@@ -9,8 +9,6 @@ import org.springframework.context.annotation.Profile
 
 import net.ttddyy.dsproxy.support.ProxyDataSourceBuilder
 
-@Profile("test")
-@Configuration
 open class DataSourceWrapper : BeanPostProcessor {
     override fun postProcessBeforeInitialization(bean: Any, beanName: String?): Any? {
         return if (bean is DataSource) {
