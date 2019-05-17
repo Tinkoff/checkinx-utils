@@ -12,6 +12,7 @@ open class PostgresInterceptor(private val dataSource: ProxyDataSource) : SqlInt
         get() = statementsList.toList()
 
     override fun startInterception() {
+        statementsList.clear()
         dataSource.addListener(sqlListener)
     }
 
