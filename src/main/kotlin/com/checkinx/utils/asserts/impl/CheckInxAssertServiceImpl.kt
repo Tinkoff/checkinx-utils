@@ -11,7 +11,7 @@ import com.checkinx.utils.sql.plan.query.ExecutionPlanQuery
 import org.springframework.stereotype.Service
 
 @Service
-class CheckInxAssertServiceImpl(
+open class CheckInxAssertServiceImpl(
     private val executionPlanQuery: ExecutionPlanQuery,
     private val executionPlanParser: ExecutionPlanParser
 ) : CheckInxAssertService {

@@ -3,10 +3,8 @@ package com.checkinx.utils.sql.plan.query.impl
 import com.checkinx.utils.sql.plan.query.ExecutionPlanException
 import com.checkinx.utils.sql.plan.query.ExecutionPlanQuery
 import org.springframework.jdbc.core.JdbcTemplate
-import org.springframework.stereotype.Component
 
-@Component
-class PostgresExecutionPlanQuery(private val jdbcTemplate: JdbcTemplate) : ExecutionPlanQuery {
+open class PostgresExecutionPlanQuery(private val jdbcTemplate: JdbcTemplate) : ExecutionPlanQuery {
     override fun execute(sqlStatement: String): List<String> {
         val executionPlanSqlQuery = "explain $sqlStatement"
         val result = jdbcTemplate.queryForList(executionPlanSqlQuery)

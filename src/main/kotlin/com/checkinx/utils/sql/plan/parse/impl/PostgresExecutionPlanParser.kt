@@ -3,10 +3,8 @@ package com.checkinx.utils.sql.plan.parse.impl
 import com.checkinx.utils.sql.plan.parse.ExecutionPlanParser
 import com.checkinx.utils.sql.plan.parse.models.ExecutionPlan
 import com.checkinx.utils.sql.plan.parse.models.PlanNode
-import org.springframework.stereotype.Component
 
-@Component
-class PostgresExecutionPlanParser : ExecutionPlanParser {
+open class PostgresExecutionPlanParser : ExecutionPlanParser {
     override fun parse(executionPlan: List<String>): ExecutionPlan {
         val root = createRootNode(executionPlan)
         val table = root.target
