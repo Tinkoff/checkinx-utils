@@ -24,7 +24,7 @@ apply from: 'gradle/config/dependencies.gradle'
 apply from: 'gradle/config/quality.gradle'
 
 group 'com.checkinx'
-version '0.1.4'
+version '0.1.5'
 
 jar {
     archiveName = "checkinx-utils-${version}.jar"
