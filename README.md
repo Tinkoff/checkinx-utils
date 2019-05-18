@@ -79,7 +79,7 @@ I’m going to publish checkinx in maven repository. Until I’ve done it use ji
 
 Firstly, modify your build.gradle:
 
-1. Add new repository
+Firstly, add new repository
 ```groovy
 repositories {
   // ...
@@ -87,49 +87,23 @@ repositories {
 }
 ```
 
-2. Add new dependency (please checkout for latest release [here](https://github.com/dsemyriazhko/checkinx-utils/releases))
+Secondly, add new dependency (please checkout for latest release [here](https://github
+.com/dsemyriazhko/checkinx-utils/releases))
 ```groovy
 dependencies {
 // ...
-   implementation 'com.github.dsemyriazhko:checkinx-utils:0.1.4'
+   implementation 'com.github.dsemyriazhko:checkinx-utils:0.1.5'
 }
 ```
 
-Secondly, add beans & BeanPostProcessor to your configuration
+Finally, add beans & BeanPostProcessor to your configuration 
 ```kotlin
+@Profile("test")
+@ImportAutoConfiguration(classes = [PostgresConfig::class])
 @Configuration
-open class DbConfig {
-    @Profile("test")
-    @Bean
-    open fun dataSourceWrapperBeanPostProcessor(): DataSourceWrapper {
-        return DataSourceWrapper()
-    }
-
-    @Profile("test")
-    @Bean
-    open fun sqlInterceptor(dataSource: DataSource): SqlInterceptor {
-        return PostgresInterceptor(dataSource as ProxyDataSource)
-    }
-
-    @Profile("test")
-    @Bean
-    open fun executionPlanParser(): ExecutionPlanParser {
-        return PostgresExecutionPlanParser()
-    }
-
-    @Profile("test")
-    @Bean
-    open fun executionPlanQuery(jdbcTemplate: JdbcTemplate): ExecutionPlanQuery {
-        return PostgresExecutionPlanQuery(jdbcTemplate)
-    }
-
-    @Profile("test")
-    @Bean
-    open fun checkInxAssertService(query: ExecutionPlanQuery, parser: ExecutionPlanParser): CheckInxAssertService {
-        return CheckInxAssertServiceImpl(query, parser)
-    }
-}
+open class CheckInxConfig
 ```
+_For now, only Postgres is supported, but you can easily change it. Just make pull request ;-)._
 
 Be sure that you are using org.testcontainers. Its DB version and configuration equal your real DB.
 
