@@ -77,9 +77,7 @@ Look at the [demo repository](https://github.com/dsemyriazhko/checkinx-demo) to 
 
 I’m going to publish checkinx in maven repository. Until I’ve done it use jitpack to get artifacts from github.
 
-Firstly, modify your build.gradle:
-
-Firstly, add new repository
+Firstly, modify your build.gradle and add new repository 
 ```groovy
 repositories {
   // ...
