@@ -25,7 +25,7 @@ open class CheckInxAssertServiceImpl(
 
     override fun assertCoverage(requiredLevel: CoverageLevel, plan: ExecutionPlan) {
         val coverageViolator = plan.findInPlanTree { node: PlanNode ->
-            node.coverageLevel < requiredLevel
+            node.coverageLevel.level!! < requiredLevel.level!!
         }
 
         if (coverageViolator != null) {
