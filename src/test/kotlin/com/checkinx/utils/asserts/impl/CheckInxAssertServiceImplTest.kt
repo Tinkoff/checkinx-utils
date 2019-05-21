@@ -75,4 +75,19 @@ class CheckInxAssertServiceImplTest {
         // ACT
         checkInxAssertService.assertCoverage(CoverageLevel.HALF, "ix_not_existing", plan)
     }
+
+    @Test(expected = CoverageLevelException::class)
+    fun testAssertCoverage() {
+        // ARRANGE
+        val plan = PostgresExecutionPlanParser().parse(listOf(
+            "Limit  (cost=11.64..11.65 rows=1 width=40)",
+            "  ->  Sort  (cost=11.63..11.64 rows=1 width=40)",
+            "        Sort Key: some_date",
+            "        ->  Seq Scan on some_table  (cost=0.00..11.62 rows=1 width=40)",
+            "              Filter: ((some_id IS NULL) AND ('2019-05-21 15:01:11.301'::timestamp without time zone <= some_date))"
+        ))
+
+        // ACT
+        checkInxAssertService.assertCoverage(CoverageLevel.HALF, plan)
+    }
 }
