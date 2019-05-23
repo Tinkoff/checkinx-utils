@@ -6,19 +6,11 @@ import com.checkinx.utils.sql.plan.parse.models.PlanNode
 
 open class PostgresExecutionPlanParser : ExecutionPlanParser {
     override fun parse(executionPlan: List<String>): ExecutionPlan {
-        val root = createRootNode(executionPlan)
-        val table = root.target
-
-        root.coverage?.let {
-            getTargetFromUsing(it).let {
-                it.first?.let { root.target = it }
-                it.second?.let { root.coverage = it }
-            }
-        }
+        val root = getTargetFromUsingOrOn(executionPlan.first())
 
         createChildNodes(executionPlan, 0, root, 2)
 
-        return ExecutionPlan(executionPlan, table, root)
+        return ExecutionPlan(executionPlan, root)
     }
 
     private fun createChildNodes(executionPlan: List<String>, planIndex: Int, parent: PlanNode, childMargin: Int): Int {
@@ -29,12 +21,7 @@ open class PostgresExecutionPlanParser : ExecutionPlanParser {
             val propertyRegex = """^\s*(?<key>.+):\s+(?<value>.+)${'$'}""".toRegex()
             when {
                 """^\s{$childMargin}->\s+.*${'$'}""".toRegex().matches(item) -> {
-                    val match = """\s+->\s+(?<coverage>.+) on (?<target>.*)\s{2,}\(.*${'$'}""".toRegex().find(item)
-                    val node = PlanNode(
-                        item,
-                        match?.groups?.get("target")?.value,
-                        match?.groups?.get("coverage")?.value
-                    )
+                    val node = getTargetFromUsingOrOn(item)
 
                     parent.children.add(node)
                     i = createChildNodes(executionPlan, i, node, childMargin + MARGIN_STEP) - 1
@@ -58,27 +45,38 @@ open class PostgresExecutionPlanParser : ExecutionPlanParser {
         return i
     }
 
-    private fun createRootNode(
-        executionPlan: List<String>
+    private fun getTargetFromUsingOrOn(planLine: String): PlanNode {
+        return getTargetFromUsing(planLine).let {
+            when (it.target) {
+                null -> return@let getTargetFromOn(it.raw)
+                else -> return@let it
+            }
+        }
+    }
+
+    private fun getTargetFromOn(
+        planLine: String
     ): PlanNode {
-        val rawLine = executionPlan.first()
-        val match = """^(?<coverage>.+) on (?<target>.*)\s{2,}\(.*${'$'}""".toRegex().find(rawLine)
+        val match = """^(\s+->\s+|)(?<coverage>.+) on (?<target>.*)\s{2,}\(.*${'$'}""".toRegex().find(planLine)
 
         return PlanNode(
-            rawLine,
+            planLine,
+            null,
             match?.groups?.get("target")?.value,
             match?.groups?.get("coverage")?.value
         )
     }
 
-    private fun getTargetFromUsing(coverage: String): Pair<String?, String?> {
-        val usingRegex = """^(?<coverage>.+) using (?<target>.+)${'$'}""".toRegex()
+    private fun getTargetFromUsing(planLine: String): PlanNode {
+        val match = """^(\s+->\s+|)(?<coverage>.+) using (?<target>.+) on (?<table>.*)\s{2,}\(.*${'$'}"""
+            .toRegex()
+            .find(planLine)
 
-        val matchUsing = usingRegex.find(coverage)
-
-        return Pair(
-            matchUsing?.groups?.get("target")?.value,
-            matchUsing?.groups?.get("coverage")?.value)
+        return PlanNode(
+            planLine,
+            match?.groups?.get("table")?.value,
+            match?.groups?.get("target")?.value,
+            match?.groups?.get("coverage")?.value)
     }
 
     companion object {

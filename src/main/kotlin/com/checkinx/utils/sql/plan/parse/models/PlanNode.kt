@@ -4,6 +4,7 @@ import com.checkinx.utils.asserts.CoverageLevel
 
 data class PlanNode(
     val raw: String,
+    val table: String?,
     var target: String?,
     var coverage: String?,
     val children: MutableList<PlanNode> = mutableListOf(),
