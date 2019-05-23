@@ -87,6 +87,17 @@ class CheckInxAssertServiceImplTest {
         checkInxAssertService.assertCoverage(CoverageLevel.HALF, "ix_pets_age", plan)
     }
 
+    @Test
+    fun testAssertIndexGivenTableWhenUsingNotRootThenTargetFound() {
+        val plan = PostgresExecutionPlanParser().parse(listOf(
+            "Limit  (cost=0.29..8.30 rows=1 width=36)",
+            "  ->  Index Scan on some_table tbl  (cost=0.14..8.17 rows=1 width=562)",
+            "        Index Cond: (age = 5000)"
+        ))
+
+        checkInxAssertService.assertCoverage(CoverageLevel.HALF, "some_table tbl", plan)
+    }
+
     @Test(expected = CoverageLevelException::class)
     fun testAssertCoverage() {
         // ARRANGE
