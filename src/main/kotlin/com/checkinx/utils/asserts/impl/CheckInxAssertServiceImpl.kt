@@ -1,9 +1,6 @@
 package com.checkinx.utils.asserts.impl
 
-import com.checkinx.utils.asserts.CheckInxAssertService
-import com.checkinx.utils.asserts.CoverageLevel
-import com.checkinx.utils.asserts.CoverageLevelException
-import com.checkinx.utils.asserts.IndexNotFoundException
+import com.checkinx.utils.asserts.*
 import com.checkinx.utils.sql.plan.parse.ExecutionPlanParser
 import com.checkinx.utils.sql.plan.parse.models.ExecutionPlan
 import com.checkinx.utils.sql.plan.parse.models.PlanNode
@@ -24,14 +21,32 @@ open class CheckInxAssertServiceImpl(
     }
 
     override fun assertCoverage(requiredLevel: CoverageLevel, plan: ExecutionPlan) {
-        val coverageViolator = plan.findInPlanTree { node: PlanNode ->
-            node.coverageLevel.level!! < requiredLevel.level!!
+        assertPlan(
+            plan
+        ) { node: PlanNode ->
+            node.coverageLevel.level < requiredLevel.level
         }
+    }
 
-        if (coverageViolator != null) {
-            throw CoverageLevelException(
-                requiredLevel.toString(),
-                coverageViolator,
+    override fun assertPlan(
+        sqlStatement: String,
+        predicate: (PlanNode) -> Boolean
+    ) {
+        val executionPlan = executionPlanQuery.execute(sqlStatement)
+        val plan = executionPlanParser.parse(executionPlan)
+
+        assertPlan(plan, predicate)
+    }
+
+    override fun assertPlan(
+        plan: ExecutionPlan,
+        predicate: (PlanNode) -> Boolean
+    ) {
+        val violator = plan.findInPlanTree(predicate)
+
+        if (violator != null) {
+            throw PlanException(
+                violator,
                 plan.executionPlan.joinToString(separator = "\n")
             )
         }
@@ -58,7 +73,7 @@ open class CheckInxAssertServiceImpl(
             )
         }
 
-        if (requiredLevel.level!! > node.coverageLevel.level!!) {
+        if (requiredLevel.level > node.coverageLevel.level) {
             throw CoverageLevelException(
                 requiredLevel.toString(),
                 node,
