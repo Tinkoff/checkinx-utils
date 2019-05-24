@@ -3,6 +3,7 @@ package com.checkinx.utils.asserts.impl
 import com.checkinx.utils.asserts.CoverageLevel
 import com.checkinx.utils.asserts.CoverageLevelException
 import com.checkinx.utils.asserts.IndexNotFoundException
+import com.checkinx.utils.asserts.PlanException
 import com.checkinx.utils.sql.plan.parse.impl.PostgresExecutionPlanParser
 import io.mockk.mockk
 import org.junit.Assert.fail
@@ -98,14 +99,44 @@ class CheckInxAssertServiceImplTest {
         checkInxAssertService.assertCoverage(CoverageLevel.HALF, "some_table tbl", plan)
     }
 
-    @Test(expected = CoverageLevelException::class)
-    fun testAssertCoverage() {
+    @Test(expected = PlanException::class)
+    fun testAssertCoverageWhenSeqScanThenCoverageLevelException() {
         // ARRANGE
         val plan = PostgresExecutionPlanParser().parse(listOf(
             "Limit  (cost=11.64..11.65 rows=1 width=40)",
             "  ->  Sort  (cost=11.63..11.64 rows=1 width=40)",
             "        Sort Key: some_date",
             "        ->  Seq Scan on some_table  (cost=0.00..11.62 rows=1 width=40)",
+            "              Filter: ((some_id IS NULL) AND ('2019-05-21 15:01:11.301'::timestamp without time zone <= some_date))"
+        ))
+
+        // ACT
+        checkInxAssertService.assertCoverage(CoverageLevel.HALF, plan)
+    }
+
+    @Test
+    fun testAssertCoverageWhenUsingIndexScanThenSuccess() {
+        // ARRANGE
+        val plan = PostgresExecutionPlanParser().parse(listOf(
+            "Limit  (cost=11.64..11.65 rows=1 width=40)",
+            "  ->  Sort  (cost=11.63..11.64 rows=1 width=40)",
+            "        Sort Key: some_date",
+            "        ->  Index Scan using ix_some_index on some_table  (cost=0.00..11.62 rows=1 width=40)",
+            "              Filter: ((some_id IS NULL) AND ('2019-05-21 15:01:11.301'::timestamp without time zone <= some_date))"
+        ))
+
+        // ACT
+        checkInxAssertService.assertCoverage(CoverageLevel.HALF, plan)
+    }
+
+    @Test
+    fun testAssertCoverageWhenOnIndexScanThenSuccess() {
+        // ARRANGE
+        val plan = PostgresExecutionPlanParser().parse(listOf(
+            "Limit  (cost=11.64..11.65 rows=1 width=40)",
+            "  ->  Sort  (cost=11.63..11.64 rows=1 width=40)",
+            "        Sort Key: some_date",
+            "        ->  Index Scan on ix_some_index  (cost=0.00..11.62 rows=1 width=40)",
             "              Filter: ((some_id IS NULL) AND ('2019-05-21 15:01:11.301'::timestamp without time zone <= some_date))"
         ))
 
