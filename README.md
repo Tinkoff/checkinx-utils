@@ -91,7 +91,7 @@ Secondly, add new dependency (please checkout for latest release [here](https://
 ```groovy
 dependencies {
 // ...
-   implementation 'com.github.dsemyriazhko:checkinx-utils:0.1.5'
+   implementation 'com.github.dsemyriazhko:checkinx-utils:0.2.0'
 }
 ```
 
