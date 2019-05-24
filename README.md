@@ -55,9 +55,10 @@ class DbIntensiveIntegrationTests : AbstractIntegrationTest() {
        val plan = executionPlanParser.parse(executionPlan)
        assertNotNull(plan)
     
-       val (_, target, coverage) = plan.rootPlanNode
-       assertEquals("ix_pets_location", target)
-       assertEquals("Index Scan", coverage)
+       val rootNode = plan.rootPlanNode
+       assertEquals("Index Scan", rootNode.coverage)
+       assertEquals("ix_pets_location", rootNode.target)
+       assertEquals("pets pet0_", rootNode.table)
     
        // Now assert coverage is simple like never before ...
        checkInxAssertService.assertCoverage(CoverageLevel.HALF, "ix_pets_location", plan)
