@@ -100,7 +100,7 @@ class CheckInxAssertServiceImplTest {
     }
 
     @Test(expected = PlanException::class)
-    fun testAssertCoverageWhenSeqScanThenCoverageLevelException() {
+    fun testAssertCoverageGivenSeqScanWhenLevelHalfThenCoverageLevelException() {
         // ARRANGE
         val plan = PostgresExecutionPlanParser().parse(listOf(
             "Limit  (cost=11.64..11.65 rows=1 width=40)",
@@ -115,7 +115,7 @@ class CheckInxAssertServiceImplTest {
     }
 
     @Test
-    fun testAssertCoverageWhenUsingIndexScanThenSuccess() {
+    fun testAssertCoverageGivenUsingIndexScanWhenLevelHalfThenSuccess() {
         // ARRANGE
         val plan = PostgresExecutionPlanParser().parse(listOf(
             "Limit  (cost=11.64..11.65 rows=1 width=40)",
@@ -130,7 +130,7 @@ class CheckInxAssertServiceImplTest {
     }
 
     @Test
-    fun testAssertCoverageWhenOnIndexScanThenSuccess() {
+    fun testAssertCoverageGivenOnIndexScanWhenLevelHalfThenSuccess() {
         // ARRANGE
         val plan = PostgresExecutionPlanParser().parse(listOf(
             "Limit  (cost=11.64..11.65 rows=1 width=40)",
@@ -142,5 +142,39 @@ class CheckInxAssertServiceImplTest {
 
         // ACT
         checkInxAssertService.assertCoverage(CoverageLevel.HALF, plan)
+    }
+
+    @Test
+    fun testAssertPredicateGivenOnIndexScanWhenLevelHalfThenSuccess() {
+        // ARRANGE
+        val plan = PostgresExecutionPlanParser().parse(listOf(
+            "Limit  (cost=11.64..11.65 rows=1 width=40)",
+            "  ->  Sort  (cost=11.63..11.64 rows=1 width=40)",
+            "        Sort Key: some_date",
+            "        ->  Index Scan on ix_some_index  (cost=0.00..11.62 rows=1 width=40)",
+            "              Filter: ((some_id IS NULL) AND ('2019-05-21 15:01:11.301'::timestamp without time zone <= some_date))"
+        ))
+
+        // ACT
+        checkInxAssertService.assertPlan(plan) {
+            it.coverageLevel.level < CoverageLevel.HALF.level
+        }
+    }
+
+    @Test(expected = PlanException::class)
+    fun testAssertPlanWhenIndexScanWhenLevelFullThenPlanException() {
+        // ARRANGE
+        val plan = PostgresExecutionPlanParser().parse(listOf(
+            "Limit  (cost=11.64..11.65 rows=1 width=40)",
+            "  ->  Sort  (cost=11.63..11.64 rows=1 width=40)",
+            "        Sort Key: some_date",
+            "        ->  Index Scan on ix_some_index  (cost=0.00..11.62 rows=1 width=40)",
+            "              Filter: ((some_id IS NULL) AND ('2019-05-21 15:01:11.301'::timestamp without time zone <= some_date))"
+        ))
+
+        // ACT
+        checkInxAssertService.assertPlan(plan) {
+            it.coverageLevel.level < CoverageLevel.FULL.level
+        }
     }
 }
