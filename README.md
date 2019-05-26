@@ -16,7 +16,7 @@ class DbIntensiveIntegrationTests : AbstractIntegrationTest() {
     // If you want to get truthful execution plan, generate enough test data
     @Sql("pets.sql") // do it by db dump ...
     @Test
-    fun testFindByNameGivenLocationWhenIndexUsingThenCoverageIsHalf() {
+    fun testFindByLocation() {
        // ARRANGE
        val location = "Moscow"
     
