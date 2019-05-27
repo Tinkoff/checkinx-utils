@@ -119,15 +119,15 @@ open class CheckInxConfig {
     @Primary
     @Bean
     @ConfigurationProperties("spring.datasource")
-    fun dataSource(): DataSource {
+    open fun dataSource(): DataSource {
         return DataSourceBuilder.create()
             .type(HikariDataSource::class.java)
             .build()
     }
 
     @Bean
-    @ConfigurationProperties("app.datasource.configuration")
-    fun dataSource(properties: DataSourceProperties): HikariDataSource {
+    @ConfigurationProperties("spring.datasource.configuration")
+    open fun dataSource(properties: DataSourceProperties): HikariDataSource {
         return properties.initializeDataSourceBuilder()
             .type(HikariDataSource::class.java)
             .build()
