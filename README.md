@@ -108,6 +108,33 @@ Be sure that you are using org.testcontainers. Its DB version and configuration 
 
 Now you are ready to create your first “intensive” integration test.
 
+## Known issues
+
+Sometimes DataSourceWrapper could fail to replace dataSource because of Spring CGLIB proxy. The easiest workaround is to create HikariDataSource bean manually:
+```kotlin
+@Profile("test")
+@ImportAutoConfiguration(classes = [PostgresConfig::class])
+@Configuration
+open class CheckInxConfig {
+    @Primary
+    @Bean
+    @ConfigurationProperties("spring.datasource")
+    fun dataSource(): DataSource {
+        return DataSourceBuilder.create()
+            .type(HikariDataSource::class.java)
+            .build()
+    }
+
+    @Bean
+    @ConfigurationProperties("app.datasource.configuration")
+    fun dataSource(properties: DataSourceProperties): HikariDataSource {
+        return properties.initializeDataSourceBuilder()
+            .type(HikariDataSource::class.java)
+            .build()
+    }
+}
+```
+
 ## Contribution
 
 If you have time and ideas how to improve checkinx, welcome! I’ll be really happy if you decide to join and contribute.
