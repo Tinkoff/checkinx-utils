@@ -86,8 +86,8 @@ repositories {
 }
 ```
 
-Secondly, add new dependency (please checkout for latest release [here](https://github
-.com/dsemyriazhko/checkinx-utils/releases))
+Secondly, add new dependency (please checkout for latest release 
+[here](https://github.com/dsemyriazhko/checkinx-utils/releases))
 ```groovy
 dependencies {
 // ...
