@@ -6,7 +6,6 @@ import com.checkinx.utils.asserts.IndexNotFoundException
 import com.checkinx.utils.asserts.PlanException
 import com.checkinx.utils.sql.plan.parse.impl.PostgresExecutionPlanParser
 import io.mockk.mockk
-import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
 

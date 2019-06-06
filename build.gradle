@@ -22,6 +22,7 @@ apply plugin: 'maven-publish'
 
 apply from: 'gradle/config/dependencies.gradle'
 apply from: 'gradle/config/quality.gradle'
+apply from: 'gradle/config/tests.gradle'
 
 group 'com.checkinx'
 version '0.2.0'

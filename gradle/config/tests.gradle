@@ -1,0 +1,6 @@
+test {
+    group 'verification'
+    useJUnit {
+        include '**/*Test.class'
+    }
+}
