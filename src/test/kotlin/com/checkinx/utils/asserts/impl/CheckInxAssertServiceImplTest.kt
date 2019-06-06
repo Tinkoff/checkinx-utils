@@ -30,11 +30,7 @@ class CheckInxAssertServiceImplTest {
         ))
 
         // ACT & ASSERT
-        try {
-            checkInxAssertService.assertCoverage(CoverageLevel.FULL, "ix_pets_age", plan)
-        } catch (e: Exception) {
-            fail("no exception expected")
-        }
+        checkInxAssertService.assertCoverage(CoverageLevel.FULL, "ix_pets_age", plan)
     }
 
     @Test(expected = CoverageLevelException::class)
@@ -58,11 +54,7 @@ class CheckInxAssertServiceImplTest {
         ))
 
         // ACT & ASSERT
-        try {
-            checkInxAssertService.assertCoverage(CoverageLevel.HALF, "ix_pets_age", plan)
-        } catch (e: Exception) {
-            fail("no exception expected")
-        }
+        checkInxAssertService.assertCoverage(CoverageLevel.HALF, "ix_pets_age", plan)
     }
 
     @Test(expected = IndexNotFoundException::class)
