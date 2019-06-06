@@ -89,11 +89,11 @@ repositories {
 ```
 
 Secondly, add new dependency (please checkout for latest release 
-[here](https://github.com/dsemyriazhko/checkinx-utils/releases))
+[here](https://github.com/TinkoffCreditSystems/checkinx-utils/releases/latest))
 ```groovy
 dependencies {
 // ...
-   implementation 'com.github.dsemyriazhko:checkinx-utils:0.2.0'
+   implementation 'com.github.tinkoffcreditsystems:checkinx-utils:0.2.0'
 }
 ```
 
