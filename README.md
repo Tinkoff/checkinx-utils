@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/TinkoffCreditSystems/checkinx-utils.svg?branch=master)](https://travis-ci.com/TinkoffCreditSystems/checkinx-utils)
+
 # CheckInx Utils
 
 You can check your query execution plan really simple by using this utils. Your tests could be look like:
