@@ -17,9 +17,4 @@ open class DataSourceWrapper : BeanPostProcessor {
                 .build()
         } else bean
     }
-
-    @Throws(BeansException::class)
-    override fun postProcessAfterInitialization(bean: Any, beanName: String?): Any? {
-        return bean
-    }
 }
