@@ -40,7 +40,7 @@ publishing {
         mavenJava(MavenPublication) {
             from components.kotlin
 
-            groupId 'com.github.dsemyriazhko'
+            groupId 'com.github.tinkoffcreditsystems'
             artifactId 'checkinx-utils'
             version "$version"
         }
